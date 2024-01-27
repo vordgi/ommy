@@ -18,7 +18,6 @@ export const search = async (text: string, token: string, onPump?: ((part: strin
         spaceId,
         token,
     }
-    console.log('Thinking...');
 
     // format question
     const resultText = await getCompletion({
@@ -59,8 +58,6 @@ export const search = async (text: string, token: string, onPump?: ((part: strin
     const aiSearchResult = JSON.parse(aiSearchRow);
 
     await sleep();
-    process.stdout.moveCursor(0, -1)
-    process.stdout.clearLine(1)
     // format answer
     const answer = await getCompletion({
         "type": "generateAnswer",
