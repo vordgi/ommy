@@ -84,7 +84,7 @@ export const search = async (text: string, token: string, onPump?: ((part: strin
             }
         ],
         "isBlockCitations": false
-    } as any, options, onPump);
+    }, options, onPump);
     const answerClean = answer.replace(/<a href="[^"]+" ?\/>/g, '').trim();
 
     return answerClean;
