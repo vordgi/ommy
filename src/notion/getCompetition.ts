@@ -37,7 +37,7 @@ const getCompletion = async (context: ContextType, options: Options, onPump?: (p
     const reader = questionResp.body?.getReader();
 
     if (!reader) {
-        throw new Error('Something went wrong');
+        throw new Error('omy: Something went wrong');
     }
 
     const result: any[] = [];
@@ -58,6 +58,8 @@ const getCompletion = async (context: ContextType, options: Options, onPump?: (p
                     if (part.type === 'success') {
                         resultText += part.completion;
                         onPump?.(part.completion);
+                    } else if (part.message) {
+                        console.log(`omy: ${part.message}`);
                     }
                     result.push(part);
                 })
