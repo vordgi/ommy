@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { BASE_URL, NOTION_INSTRUCTION } from "./constants";
+import { BASE_URL } from "./constants";
 import getCompletion from "./getCompetition";
 import getSpace from "./getSpace";
 
@@ -18,6 +18,8 @@ export const search = async (text: string, token: string, onPump?: ((part: strin
         spaceId,
         token,
     }
+    console.log('Thinking...');
+
     // format question
     const resultText = await getCompletion({
         "type": "generateTimelyQueryAndKeywords",
@@ -26,7 +28,8 @@ export const search = async (text: string, token: string, onPump?: ((part: strin
     const attrsMatched = resultText.match(/<search question="(?<question>.+)" keywords="(?<keywords>.+)" lookback="(?<lookback>.+)"\/>/);
 
     if (!attrsMatched?.groups) {
-        throw new Error('!attrsMatched?.groups');
+        console.error('!attrsMatched?.groups');
+        process.exit();
     }
 
     await sleep();
@@ -56,10 +59,11 @@ export const search = async (text: string, token: string, onPump?: ((part: strin
     const aiSearchResult = JSON.parse(aiSearchRow);
 
     await sleep();
+    process.stdout.moveCursor(0, -1)
+    process.stdout.clearLine(1)
     // format answer
     const answer = await getCompletion({
         "type": "generateAnswer",
-        "systemInstructions": NOTION_INSTRUCTION,
         "transcript": [
             {
                 "id": 1,
