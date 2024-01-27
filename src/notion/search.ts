@@ -4,10 +4,10 @@ import getCompletion from "./getCompetition";
 import getSpace from "./getSpace";
 
 // "The rate limit for incoming requests per integration is an average of three requests per second".
-// But for AI the limit seems to be smaller, so requests have to be delayed
+// But for AI the limit seems to be smaller (three requests per 10 seconds?), so requests have to be delayed
 const sleep = () => {
     return new Promise(resolve => {
-        setTimeout(resolve, 2000);
+        setTimeout(resolve, 5050);
     })
 }
 
