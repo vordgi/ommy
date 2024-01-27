@@ -14,6 +14,8 @@ type Options = {
     token: string;
 }
 
+const decoder = new TextDecoder();
+
 const getCompletion = async (context: ContextType, options: Options, onPump?: (part: string) => void) => {
     const { aiSessionId, spaceId, token } = options;
     const questionResp = await fetch(`${BASE_URL}/getCompletion`, {
@@ -44,12 +46,9 @@ const getCompletion = async (context: ContextType, options: Options, onPump?: (p
         return reader!.read().then(({ done, value }) => {
             if (done) return;
 
-            let str = "";
+            let str: string = '';
             if (value) {
-                for (let i = 0; i < value.length; i++) {
-                    const char = String.fromCharCode(parseInt(value[i].toString()));
-                    str += char;
-                }
+                str = decoder.decode(value);
             }
 
             try {
