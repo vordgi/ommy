@@ -71,7 +71,7 @@ export const search = async (text: string, token: string) => {
         ],
         "isBlockCitations": false
     }, options)
-    const answerClean = answer.replace(/<a href="[^"]+"\/>/g, '').trim();
+    const answerClean = answer.replace(/<a href="[^"]+" ?\/>/g, '').trim();
 
     return answerClean;
 }
