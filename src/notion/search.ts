@@ -3,7 +3,15 @@ import { BASE_URL, NOTION_INSTRUCTION } from "./constants";
 import getCompletion from "./getCompetition";
 import getSpace from "./getSpace";
 
-export const search = async (text: string, token: string) => {
+// "The rate limit for incoming requests per integration is an average of three requests per second".
+// But for AI the limit seems to be smaller, so requests have to be delayed
+const sleep = () => {
+    return new Promise(resolve => {
+        setTimeout(resolve, 2000);
+    })
+}
+
+export const search = async (text: string, token: string, onPump?: ((part: string) => void) | undefined) => {
     const spaceId = await getSpace(token);
     const options = {
         aiSessionId: uuidv4(),
@@ -21,6 +29,7 @@ export const search = async (text: string, token: string) => {
         throw new Error('!attrsMatched?.groups');
     }
 
+    await sleep();
     const { question, keywords, lookback } = attrsMatched.groups;
 
     // search
@@ -46,6 +55,7 @@ export const search = async (text: string, token: string) => {
     const aiSearchRow = await aiSearchResp.text();
     const aiSearchResult = JSON.parse(aiSearchRow);
 
+    await sleep();
     // format answer
     const answer = await getCompletion({
         "type": "generateAnswer",
@@ -70,7 +80,7 @@ export const search = async (text: string, token: string) => {
             }
         ],
         "isBlockCitations": false
-    }, options)
+    }, options, onPump);
     const answerClean = answer.replace(/<a href="[^"]+" ?\/>/g, '').trim();
 
     return answerClean;

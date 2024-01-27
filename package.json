@@ -1,6 +1,6 @@
 {
   "name": "ommy",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Unofficial provider for working with notion AI",
   "exports": {
     "./notion": {
