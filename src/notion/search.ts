@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { BASE_URL } from "./constants";
 import getCompletion from "./getCompetition";
-import getSpace from "./getSpace";
+import getSpaces from "./getSpaces";
 
 // "The rate limit for incoming requests per integration is an average of three requests per second".
 // But for AI the limit seems to be smaller (three requests per 10 seconds?), so requests have to be delayed
@@ -11,11 +11,30 @@ const sleep = () => {
     })
 }
 
-export const search = async (text: string, token: string, onPump?: ((part: string) => void) | undefined) => {
-    const spaceId = await getSpace(token);
+type Options = {
+    text: string;
+    token: string;
+    spaceId?: string;
+    onPump?: ((part: string) => void) | undefined;
+}
+
+export const search = async ({ text, token, spaceId, onPump }: Options) => {
+    let targetSpaceId = spaceId;
+    try {
+        if (!spaceId) {
+            const spaces = await getSpaces(token);
+            const targetUserSpaces = Object.values(spaces)[0] as any;
+            targetSpaceId = Object.keys(targetUserSpaces.space)[0];
+        }
+    } finally {
+        if (!targetSpaceId) {
+            throw new Error('Failed to get spaceId');
+        }
+    }
+
     const options = {
         aiSessionId: uuidv4(),
-        spaceId,
+        spaceId: targetSpaceId,
         token,
     }
 

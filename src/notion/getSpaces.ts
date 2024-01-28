@@ -1,6 +1,6 @@
 import { BASE_URL } from "./constants";
 
-const getSpace = async (token: string) => {
+const getSpaces = async (token: string) => {
     const spacesResp = await fetch(`${BASE_URL}/getSpaces`, {
         headers: {
             "accept": "application/x-ndjson",
@@ -10,9 +10,7 @@ const getSpace = async (token: string) => {
         "method": "POST",
     });
     const spaces = await spacesResp.json();
-    const targetUserSpaces = Object.values(spaces)[0] as any;
-
-    return Object.keys(targetUserSpaces.space)[0];
+    return spaces;
 }
 
-export default getSpace;
+export default getSpaces;
