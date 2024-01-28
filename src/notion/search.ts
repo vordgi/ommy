@@ -82,6 +82,13 @@ export const search = async ({ text, token, spaceId, onPump }: Options) => {
         "type": "generateAnswer",
         "transcript": [
             {
+                "id": 0,
+                "mode": "direct",
+                "available-commands": [
+                    "chat"
+                ],
+            },
+            {
                 "id": 1,
                 "type": "human",
                 "value": `<chat><text>${text}</text></chat>`
@@ -95,12 +102,18 @@ export const search = async ({ text, token, spaceId, onPump }: Options) => {
             {
                 "type": "observation",
                 "observationType": "search",
-                "value": aiSearchResult.results.map((result: any) => `<context>${result.title}${result.text}<context>`).join(''),
+                "value": `<search-results current-results=\"${aiSearchResult.results.length}\">${
+                    aiSearchResult.results.map((result: any, i: number) => (
+                        `<page-result id=\"${i + 1}\" title=\"${result.title}\" path=\"${result.path || ''}\" last-edited-datetime=\"${result.lastEdited || ''}\">${result.text}</page-result>`
+                    )).join('')
+                }</search-result>`,
                 "id": 3
             }
         ],
-        "isBlockCitations": false
-    }, options, onPump);
+        "isBlockCitations": false,
+        "inferenceReason": "assistant",
+        "isSpacePermission": false,
+    } as any, options, onPump);
     const answerClean = answer.replace(/<a href="[^"]+" ?\/>/g, '').trim();
 
     return answerClean;
