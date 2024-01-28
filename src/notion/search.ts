@@ -5,20 +5,22 @@ import getSpaces from "./getSpaces";
 
 // "The rate limit for incoming requests per integration is an average of three requests per second".
 // But for AI the limit seems to be smaller (three requests per 10 seconds?), so requests have to be delayed
-const sleep = () => {
+const sleep = (delay: number) => {
     return new Promise(resolve => {
-        setTimeout(resolve, 5050);
+        setTimeout(resolve, delay);
     })
 }
 
 type Options = {
     text: string;
     token: string;
+    /** Delay time between requests */
+    delay?: number;
     spaceId?: string;
     onPump?: ((part: string) => void) | undefined;
 }
 
-export const search = async ({ text, token, spaceId, onPump }: Options) => {
+export const search = async ({ text, token, spaceId, onPump, delay = 5050 }: Options) => {
     let targetSpaceId = spaceId;
     try {
         if (!spaceId) {
@@ -50,7 +52,7 @@ export const search = async ({ text, token, spaceId, onPump }: Options) => {
         process.exit();
     }
 
-    await sleep();
+    await sleep(delay);
     const { question, keywords, lookback } = attrsMatched.groups;
 
     // search
@@ -76,7 +78,12 @@ export const search = async ({ text, token, spaceId, onPump }: Options) => {
     const aiSearchRow = await aiSearchResp.text();
     const aiSearchResult = JSON.parse(aiSearchRow);
 
-    await sleep();
+    if (!aiSearchResult.results?.length) {
+        console.log('I can\'t find anything in your Notion');
+        return;
+    }
+
+    await sleep(delay);
     // format answer
     const answer = await getCompletion({
         "type": "generateAnswer",
