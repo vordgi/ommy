@@ -1,6 +1,6 @@
 {
   "name": "ommy",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Unofficial provider for working with notion AI",
   "exports": {
     "./notion": {
@@ -12,11 +12,8 @@
   },
   "files": [
     "dist",
-    "notion/index.d.ts",
-    "notion/search.d.ts",
-    "notion/translate.d.ts",
-    "notion/helpme.d.ts",
-    "notion/lib/getSpaces.d.ts"
+    "notion/*.d.ts",
+    "notion/lib/*.d.ts"
   ],
   "scripts": {
     "build": "tsc"
