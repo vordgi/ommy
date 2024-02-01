@@ -26,7 +26,7 @@ Searching for an answer in your Notion
 import { search } from 'ommy/notion';
 
 const answer = await search({
-    prompt: 'the process of caching a request from the service with DNA data',
+    text: 'the process of caching a request from the service with DNA data',
     token,
 });
 ```
@@ -35,8 +35,8 @@ const answer = await search({
 
 ```js
 const answer = await translate({
-    prompt: 'Denken Sie sich einen Namen für eine Variable aus, die für das Zwischenspeichern von Anfragen aus dem Dienst mit DNA-Daten verantwortlich ist',
-    language: 'english'
+    text: 'Denken Sie sich einen Namen für eine Variable aus, die für das Zwischenspeichern von Anfragen aus dem Dienst mit DNA-Daten verantwortlich ist',
+    language: 'english',
     token,
 });
 ```
