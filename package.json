@@ -6,15 +6,17 @@
     "./notion": {
       "default": "./dist/notion/index.js"
     },
-    "./notion/getSpaces": {
-      "default": "./dist/notion/getSpaces.js"
+    "./notion/lib/getSpaces": {
+      "default": "./dist/notion/lib/getSpaces.js"
     }
   },
   "files": [
     "dist",
     "notion/index.d.ts",
     "notion/search.d.ts",
-    "notion/getSpaces.d.ts"
+    "notion/translate.d.ts",
+    "notion/helpme.d.ts",
+    "notion/lib/getSpaces.d.ts"
   ],
   "scripts": {
     "build": "tsc"
