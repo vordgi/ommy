@@ -3,6 +3,8 @@ import { BASE_URL } from './constants';
 type ContextType = {
     type: string;
     question?: string;
+    pageTitle?: string;
+    selectedText?: string;
     systemInstructions?: string;
     transcript?: any[];
     isBlockCitations?: boolean;

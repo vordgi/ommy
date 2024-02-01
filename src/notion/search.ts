@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import { BASE_URL } from "./constants";
-import getCompletion from "./getCompetition";
-import getSpaces from "./getSpaces";
+import { BASE_URL } from "./lib/constants";
+import getCompletion from "./lib/getCompetition";
+import getSpaces from "./lib/getSpaces";
 
 // "The rate limit for incoming requests per integration is an average of three requests per second".
 // But for AI the limit seems to be smaller (three requests per 10 seconds?), so requests have to be delayed
